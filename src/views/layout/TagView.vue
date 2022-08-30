@@ -14,10 +14,12 @@
 import { ref } from 'vue'
 
 const tags = ref([
-  { name: 'Tag 1', type: '' },
-  { name: 'Tag 2', type: 'success' },
-  { name: 'Tag 3', type: 'info' },
-  { name: 'Tag 4', type: 'warning' },
-  { name: 'Tag 5', type: 'danger' },
+  { name: '个人中心', type: '' },
+  { name: '权限列表', type: '' },
+  { name: '修改密码', type: '' },
+  { name: '详情页', type: '' },
+  { name: '修改页', type: '' },
+  { name: '删除页', type: '' },
+  { name: '分页列表', type: '' },
 ])
 </script>

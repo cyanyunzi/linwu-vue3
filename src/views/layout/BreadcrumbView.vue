@@ -1,10 +1,10 @@
 <template>
   <el-breadcrumb :separator-icon="ArrowRight">
 
-    <el-breadcrumb-item :to="{ path: '/' }">homepage</el-breadcrumb-item>
-    <el-breadcrumb-item>promotion management</el-breadcrumb-item>
-    <el-breadcrumb-item>promotion list</el-breadcrumb-item>
-    <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
+    <el-breadcrumb-item :to="{ path: '/' }">主页</el-breadcrumb-item>
+    <el-breadcrumb-item>会员中心</el-breadcrumb-item>
+    <el-breadcrumb-item>我的积分</el-breadcrumb-item>
+    <el-breadcrumb-item>积分详情</el-breadcrumb-item>
 
   </el-breadcrumb>
 </template>

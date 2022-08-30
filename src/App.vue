@@ -12,26 +12,25 @@
       </el-row>
     </el-aside>
 
-    <div style="width: 5px;background-color: #F1F1F1"></div>
+    <div style="width: 8px;background-color: #F1F1F1"></div>
 
     <el-container style="background-color: #F1F1F1">
-      <el-header style="display: flex;align-items: center; background-color: white">
-        <BreadcrumbView style="width: 93%;float: left"></BreadcrumbView>
-        <img src="src/assets/头像.png" style="width: 30px">
-        <span style="height: auto;width: 20px;white-space:nowrap">林呜呜</span>
+      <el-header class="el-header">
+        <BreadcrumbView style="width: 95%;float: left"></BreadcrumbView>
+        <span style="position: absolute;right: 30px;white-space:nowrap">林呜呜</span>
+        <el-icon style="position: absolute;right: 10px"><Avatar /></el-icon>
       </el-header>
 
       <div class="tagView-div">
         <TagView></TagView>
       </div>
 
-      <div style="height:2px;background-color: #F1F1F1"></div>
+      <div style="height:5px;background-color: #F1F1F1"></div>
 
       <el-main style="background-color: white">
         内容区
         <RouterView />
       </el-main>
-
 
     </el-container>
   </el-container>
@@ -59,9 +58,11 @@ html, body, #app, .el-container {
 
 .el-header {
   height: 30px;
-  position: sticky;
+  /*position: sticky;*/
   border-width: 3px;
-  /*border-style: ridge;*/
+  display: flex;
+  align-items: center;
+  background-color: white
 }
 
 
@@ -73,8 +74,5 @@ html, body, #app, .el-container {
   /*height: 30px;*/
 }
 
-.test-a {
-  float: left;
-}
 
 </style>
