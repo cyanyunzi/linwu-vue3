@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-aside style="background-color: black;width: 13%">
+    <el-aside style="background-color: black;width: 16%">
       <el-row>
         <el-col>
           <ProjectInfoView ></ProjectInfoView>
@@ -28,7 +28,7 @@
       <div style="height:5px;background-color: #F1F1F1"></div>
 
       <el-main style="background-color: white">
-        内容区
+<!--        内容区-->
         <RouterView />
       </el-main>
 

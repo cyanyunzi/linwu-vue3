@@ -4,25 +4,21 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/menu',
-      name: 'ment',
-      component: () => import("../views/layout/MenuView.vue"),
+      path: '/menuPage',
+      name: 'menuPage',
+      component: () => import("../views/menu/MenuPage.vue"),
     },
     {
-      path: '/header',
-      name: 'header',
-      component: () => import("../views/layout/HeaderView.vue"),
+      path: '/menuAdd',
+      name: 'menuAdd',
+      component: () => import("../views/menu/MenuAdd.vue"),
     },
     {
-      path: '/index1',
-      name: 'index1',
-      component: () => import("../views/index/indexView1.vue"),
+      path: '/dictPage',
+      name: 'dictPage',
+      component: () => import("../views/dict/DictPage.vue"),
     },
-    {
-      path: '/index2',
-      name: 'index2',
-      component: () => import("../views/index/indexView2.vue"),
-    },
+
   ]
 })
 
