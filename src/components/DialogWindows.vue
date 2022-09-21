@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    @opened="dialogInit"
     v-model="dialogVisible"
     title="Tips"
     width="50%"
@@ -10,7 +11,7 @@
 
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false"
+        <el-button type="primary" @click="dialogSuccess"
         >保存</el-button
         >
 
@@ -23,10 +24,14 @@
 
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 import { ElMessageBox } from "element-plus";
 
+
 const dialogVisible = ref(false);
+const callbackFunction = ref(() => {
+  return 1;
+});
 
 const handleClose = (done: () => void) => {
   ElMessageBox.confirm("确认取消操作吗?")
@@ -38,9 +43,25 @@ const handleClose = (done: () => void) => {
     });
 };
 
+function dialogInit() {
+  dialogVisible.value = true;
+}
+
+function dialogClose() {
+  dialogVisible.value = false;
+  console.log("关闭对话框");
+}
+
+
+
 defineExpose({
-  dialogVisible
+  dialogVisible, callbackFunction, dialogInit,dialogClose
 });
+
+const emit =defineEmits(['dialogSubmit']);
+function dialogSuccess(){
+  emit('dialogSubmit')
+}
 
 
 </script>

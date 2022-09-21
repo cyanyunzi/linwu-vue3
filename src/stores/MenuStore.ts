@@ -19,7 +19,7 @@ export const MenuStore = defineStore({
   actions: {
     async initMenus(){
       const result:MenuLoadResp[] = await MenuService.load();
-      result.forEach(item => {
+      result[0].children.forEach(item => {
         this.menus.push(item);
       });
 

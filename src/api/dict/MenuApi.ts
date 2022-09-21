@@ -2,6 +2,7 @@ import { Request } from "@/utils/HttpUtil";
 import type { DictPageReq } from "@/model/DictModel";
 import { DictPageResp } from "@/model/DictModel";
 import { MenuListReq, MenuLoadResp, MenuPageReq, MenuPageResp, MenuSimpleListResp } from "@/model/MenuModel";
+import { BaseResp } from "@/model/BaseModle";
 
 
 export class MenuService {
@@ -18,6 +19,11 @@ export class MenuService {
   static selectSimpleList(req:MenuListReq) {
     const config = { "url": "/menu/simpleList", "method": "get","params":req };
     return Request.getListData(config, MenuSimpleListResp);
+  }
+
+  static addMenu(req:MenuListReq) {
+    const config = { "url": "/menu", "method": "post","params":req };
+    return Request.getData(config, BaseResp);
   }
 }
 

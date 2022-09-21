@@ -24,16 +24,11 @@
   <el-divider content-position="left">数据操作</el-divider>
 
 
-
   <el-button type="primary" @click="openWindowForm">新增</el-button>
   <el-button type="warning">修改</el-button>
   <el-button type="info">查看</el-button>
   <el-button type="danger">删除</el-button>
 
-
-  <DialogWindows ref="addMenuWindowForm">
-    <MenuAdd></MenuAdd>
-  </DialogWindows>
 
   <el-table :data="pageData.list" empty-text=" ">
     <el-table-column type="selection" width="55" />
@@ -65,48 +60,69 @@
     />
   </div>
 
+
+  <DialogWindows ref="addMenuWindowForm" @dialogSubmit="submitAdd">
+    <MenuAdd ref="menuAdd"></MenuAdd>
+  </DialogWindows>
+
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from "vue";
+import { nextTick, reactive, ref } from "vue";
 import type { Ref } from "vue";
 import { BasePageListResp } from "@/model/BaseModle";
 import { MenuPageReq, MenuPageResp } from "@/model/MenuModel";
 import { MenuService } from "@/api/dict/MenuApi";
-import DialogWindows from '@/components/DialogWindows.vue'
-import MenuAdd from '@/views/menu/MenuAdd.vue'
+import DialogWindows from "@/components/DialogWindows.vue";
+import MenuAdd from "@/views/menu/MenuAdd.vue";
 
-const pageReq = reactive(new MenuPageReq());
+const pageReq = ref(new MenuPageReq());
 const pageData: Ref<BasePageListResp<MenuPageResp>> = ref(new BasePageListResp<MenuPageResp>());
 
-MenuService.selectPage(pageReq).then(resp => {
-  pageData.value = resp;
-});
+const reload = () => {
+  pageReq.value = new MenuPageReq();
+  MenuService.selectPage(pageReq.value).then(resp => {
+    pageData.value = resp;
+  });
+}
+
+reload();
 
 const handleCurrentChange = (val: number) => {
-  pageReq.page = val;
-  MenuService.selectPage(pageReq).then(data => {
+  pageReq.value.page = val;
+  MenuService.selectPage(pageReq.value).then(data => {
     pageData.value = data;
+
   });
 };
 
 const handleSizeChange = (val: number) => {
-  pageReq.size = val;
-  MenuService.selectPage(pageReq).then(data => {
+  pageReq.value.size = val;
+  MenuService.selectPage(pageReq.value).then(data => {
     pageData.value = data;
   });
 };
 
 function formSearch() {
-  MenuService.selectPage(pageReq).then(data => {
+  MenuService.selectPage(pageReq.value).then(data => {
     pageData.value = data;
   });
 }
 
-const addMenuWindowForm = ref()
-function openWindowForm(){
-  addMenuWindowForm.value.dialogVisible = true;
+const menuAdd = ref();
+const addMenuWindowForm = ref();
+
+function openWindowForm() {
+  addMenuWindowForm.value.dialogInit();
 }
+
+function submitAdd() {
+  menuAdd.value.addMenu.call("", menuAdd.value.ruleFormRef).then(() => {
+    addMenuWindowForm.value.dialogClose.call();
+    reload();
+  });
+}
+
 
 </script>
 

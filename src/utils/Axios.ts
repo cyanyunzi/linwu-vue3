@@ -3,6 +3,8 @@ import type { BaseReq } from "@/model/BaseModle";
 import { DictPageResp } from "@/model/DictModel";
 
 axios.defaults.baseURL = "/api/";
+axios.defaults.headers.post["Content-Type"] = "application/json;charset=UTF-8";
+axios.defaults.headers.put["Content-Type"] = "application/json;charset=UTF-8";
 
 //创建axios实例
 export const request = axios.create({
@@ -16,7 +18,7 @@ export const request = axios.create({
 request.interceptors.response.use(function(response) {
   const remoteResp = response.data;
   const respData = remoteResp.data;
-  console.log("远程:",remoteResp);
+  console.log("远程:", remoteResp);
 
   // 2xx 范围内的状态码都会触发该函数。
   // 对响应数据做点什么

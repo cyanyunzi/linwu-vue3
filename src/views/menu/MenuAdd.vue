@@ -1,80 +1,93 @@
 <template>
-
-  <el-form :model="addReq" label-width="70px">
-    <el-form-item label="菜单名称">
-      <el-input v-model="addReq.name" />
+  <el-form ref="ruleFormRef" :model="addReq" :rules="rules" label-width="80px" style="max-width: 700px">
+    <el-form-item label="菜单名称" prop="name">
+      <el-input v-model="addReq.name" placeholder="请输入菜单名称" maxlength="10" show-word-limit />
     </el-form-item>
 
-    <el-form-item label="菜单编码">
-      <el-input v-model="addReq.code" />
+    <el-form-item label="菜单编码" prop="code">
+      <el-input v-model="addReq.code" placeholder="请输入菜单名称" maxlength="10" show-word-limit />
     </el-form-item>
 
-    <el-form-item label="菜单路径">
-      <el-input v-model="addReq.path" />
-    </el-form-item>
-
-    <el-form-item label="菜单路径">
-      <el-input v-model="addReq.icon" />
+    <el-form-item label="菜单路径" prop="path">
+      <el-input v-model="addReq.path" placeholder="请输入菜单路径" maxlength="10" show-word-limit />
     </el-form-item>
 
     <el-form-item label="上级菜单">
-      <el-tree-select
-        v-model="addReq.parentId"
-        :data="simpleMenuList"
-        check-strictly
-        :render-after-expand="false"
-        placeholder="请选择"
-      />
-
-
-
-<!--      <el-select-->
-<!--        v-model="addReq.parentId"-->
-<!--        placeholder="请选择"-->
-<!--      >-->
-<!--        <template v-for="simpleMenu of simpleMenuList"-->
-<!--                  :key="simpleMenu.id">-->
-<!--          <el-option :label="simpleMenu.name" :value="simpleMenu.id" />-->
-<!--        </template>-->
-
-
-
-
-<!--      </el-select>-->
+      <MenuTreeSelect ref="menuTreeSelect" v-model="addReq.parentId" @change="parentSelect()"></MenuTreeSelect>
     </el-form-item>
 
+    <el-form-item label="菜单图标" v-show="showIcon">
+      <el-input v-model="addReq.icon" placeholder="请输入菜单图标" maxlength="10" show-word-limit />
+    </el-form-item>
   </el-form>
 
 </template>
 
 
 <script lang="ts" setup>
-import { reactive, ref } from "vue";
-import { MenuListReq, MenuLoadResp, MenuReq, MenuSimpleListResp } from "@/model/MenuModel";
+import { defineExpose, getCurrentInstance, reactive, ref } from "vue";
+import { MenuReq } from "@/model/MenuModel";
 import { MenuService } from "@/api/dict/MenuApi";
+import MenuTreeSelect from "@/components/MenuTreeSelect.vue";
+import type { FormInstance, FormRules } from "element-plus";
 
 const addReq = reactive(new MenuReq());
-const simpleMenuList = ref([]);
+const ruleFormRef = ref<FormInstance>();
 
-const onSubmit = () => {
-  console.log("submit!");
+const menuTreeSelect = ref();
+MenuService.load().then(resp => {
+  menuTreeSelect.value.items = resp;
+});
+
+
+const showIcon = ref(false);
+
+function parentSelect(val: any) {
+  const parentId = menuTreeSelect.value.currentSelectNode?.parentId;
+  if ("-1" === parentId) {
+    showIcon.value = true;
+    return;
+  }
+
+  showIcon.value = false;
+  addReq.icon = "";
+}
+
+
+const rules = reactive<FormRules>({
+  name: [
+    { required: true, message: "请输入菜单名称", trigger: "blur" },
+    { min: 1, max: 10, message: "长度1到10", trigger: "blur" }
+  ],
+  code: [
+    { required: true, message: "请输入菜单编码", trigger: "blur" },
+    { min: 1, max: 10, message: "长度1到10", trigger: "blur" }
+  ],
+  path: [
+    { required: true, message: "请输入菜单路径", trigger: "blur" },
+    { min: 1, max: 10, message: "长度1到10", trigger: "blur" }
+  ]
+});
+
+const addMenu = async (formEl: FormInstance) => {
+  if (!formEl) {
+    return;
+  }
+
+  await formEl.validate((valid, fields) => {
+    if (!valid) {
+      throw new Error("表单校验失败");
+    }
+  });
+
+  await MenuService.addMenu(addReq);
+
 };
 
-const menuListReq = new MenuListReq();
-menuListReq.parentId = "0";
-MenuService.selectSimpleList(menuListReq).then(resp => {
-  // simpleMenuList.value = resp;
-  // resp.map(item=>{
-  //   const obj = {};
-  //   obj.value = item.id;
-  // })
-});
+defineExpose({ addMenu, ruleFormRef });
+
 </script>
 
 <style scoped>
-
-.el-input {
-  /*width: 300px;*/
-}
 
 </style>

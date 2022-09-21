@@ -6,7 +6,7 @@ import type {
 } from "axios";
 import axios, { AxiosError } from "axios";
 import { request } from "@/utils/Axios";
-import type { BaseResp } from "@/model/BaseModle";
+import  { BaseResp } from "@/model/BaseModle";
 import { ElLoading, ElMessage } from "element-plus";
 import { BasePageListResp, BasePageReq, BasePageResp, Result } from "@/model/BaseModle";
 import { reactive, ref } from "vue";
@@ -65,6 +65,11 @@ export class Request {
     );
   }
 
+  private static sendData<T extends BaseResp>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return Request.axiosInstance.request(config);
+  }
+
+
   private static sendList<T extends BaseResp>(config: AxiosRequestConfig): Promise<AxiosResponse<T[]>> {
     return Request.axiosInstance.request(config);
   }
@@ -117,6 +122,22 @@ export class Request {
 
       return listData;
     });
+  }
+
+  static getData<T extends BaseResp>(config: AxiosRequestConfig, clazz: any): Promise<any> {
+     return Request.sendData(config).then((axiosResponse) => {
+       const resp = Reflect.construct(clazz, []);
+       Object.assign(resp, axiosResponse.data);
+      return resp;
+    }).catch(error => {
+       console.log(error);
+       if (error instanceof AxiosError) {
+         ElMessage.error(`调用API错误 url:[${config.url}] method:[${config.method}] httpcode:[${error?.response?.status}] msg:[${error?.response?.statusText}]`);
+       } else {
+         ElMessage.error(error.message);
+       }
+       return new BaseResp();
+     });
   }
 
 
