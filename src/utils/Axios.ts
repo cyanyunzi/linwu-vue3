@@ -17,8 +17,6 @@ export const request = axios.create({
 // 添加响应拦截器
 request.interceptors.response.use(function(response) {
   const remoteResp = response.data;
-  const respData = remoteResp.data;
-  console.log("远程:", remoteResp);
 
   // 2xx 范围内的状态码都会触发该函数。
   // 对响应数据做点什么

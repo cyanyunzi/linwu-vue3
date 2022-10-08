@@ -1,21 +1,20 @@
 <template>
   <el-dialog
-    @opened="dialogInit"
     v-model="dialogVisible"
-    title="Tips"
+    :title="title"
     width="50%"
-    :before-close="handleClose"
+    :before-close="showSuccessButton?handleClose:null"
   >
 
     <slot></slot>
 
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="primary" @click="dialogSuccess"
+        <el-button type="primary" @click="dialogSuccess" v-if="showSuccessButton"
         >保存</el-button
         >
 
-        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button @click="dialogClose">取消</el-button>
 
       </span>
     </template>
@@ -24,17 +23,19 @@
 
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref } from "vue";
+import { reactive, ref } from "vue";
 import { ElMessageBox } from "element-plus";
 
-
 const dialogVisible = ref(false);
-const callbackFunction = ref(() => {
-  return 1;
-});
+const params = reactive({});
+const showSuccessButton = ref(true);
 
 const handleClose = (done: () => void) => {
-  ElMessageBox.confirm("确认取消操作吗?")
+  if (!showSuccessButton.value) {
+    return;
+  }
+
+  ElMessageBox.confirm("确认关闭吗?")
     .then(() => {
       done();
     })
@@ -43,25 +44,22 @@ const handleClose = (done: () => void) => {
     });
 };
 
-function dialogInit() {
-  dialogVisible.value = true;
+
+defineExpose({
+  dialogVisible, showSuccessButton, params
+});
+
+const emit = defineEmits(["dialogSubmit", "dialogCancel"]);
+
+function dialogSuccess() {
+  emit("dialogSubmit");
 }
 
 function dialogClose() {
-  dialogVisible.value = false;
-  console.log("关闭对话框");
+  emit("dialogCancel");
 }
 
-
-
-defineExpose({
-  dialogVisible, callbackFunction, dialogInit,dialogClose
-});
-
-const emit =defineEmits(['dialogSubmit']);
-function dialogSuccess(){
-  emit('dialogSubmit')
-}
+defineProps(["title"]);
 
 
 </script>

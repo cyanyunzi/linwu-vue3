@@ -32,6 +32,15 @@ export class MenuPageResp extends BasePageResp {
   parentId = "";
 }
 
+export class MenuResp extends BaseResp {
+  code = "";
+  name = "";
+  path = "";
+  icon = "";
+  parentId = "";
+  parentName = "";
+}
+
 export class MenuSimpleListResp extends BaseResp {
   name = "";
   id = "";

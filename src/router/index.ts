@@ -14,6 +14,11 @@ const router = createRouter({
       component: () => import("../views/menu/MenuAdd.vue"),
     },
     {
+      path: '/menuDetail',
+      name: 'menuDetail',
+      component: () => import("../views/menu/MenuDetail.vue"),
+    },
+    {
       path: '/dictPage',
       name: 'dictPage',
       component: () => import("../views/dict/DictPage.vue"),

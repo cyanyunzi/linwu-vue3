@@ -20,7 +20,9 @@
       <el-input v-model="addReq.icon" placeholder="请输入菜单图标" maxlength="10" show-word-limit />
     </el-form-item>
   </el-form>
+
 </template>
+
 
 <script lang="ts" setup>
 import { defineExpose, reactive, ref } from "vue";
@@ -31,16 +33,9 @@ import type { FormInstance, FormRules } from "element-plus";
 import { addRules } from "@/rules/MenuRule";
 
 const addReq = reactive(new MenuReq());
-
 const ruleFormRef = ref<FormInstance>();
 
 const menuTreeSelect = ref();
-
-const isUpdate = ref(false);
-
-const id = ref("");
-
-
 MenuService.load().then(resp => {
   menuTreeSelect.value.items = resp;
 });
@@ -58,33 +53,24 @@ function parentSelect(val: any) {
   addReq.icon = "";
 }
 
-const addMenu = async () => {
-  if (!ruleFormRef.value) {
+
+const addMenu = async (formEl: FormInstance) => {
+  if (!formEl) {
     return;
   }
 
-  await ruleFormRef.value.validate((valid, fields) => {
+  await formEl.validate((valid, fields) => {
     if (!valid) {
       throw new Error("表单校验失败");
     }
   });
 
-  if (!isUpdate.value) {
-    await MenuService.addMenu(addReq);
-  } else {
-    await MenuService.updateMenu(id.value, addReq);
-  }
+  await MenuService.addMenu(addReq);
 
 };
 
 
-function restForm() {
-  ruleFormRef.value?.resetFields();
-  ruleFormRef.value?.clearValidate();
-}
-
-
-defineExpose({ addMenu, restForm });
+defineExpose({ addMenu, ruleFormRef });
 
 </script>
 

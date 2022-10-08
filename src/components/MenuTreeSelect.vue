@@ -38,7 +38,6 @@ const currentSelectNode = ref();
 
 function selectTreeId(treeId: string) {
   currentSelectNode.value = menuElTreeSelect.value.getCurrentNode();
-  console.log("当前选中值:", treeId, "node:", currentSelectNode.value);
 }
 
 function convert(item: { id: string; name: string; parentId: ""; children: [] }): ElTreeData {
@@ -59,6 +58,8 @@ function convert(item: { id: string; name: string; parentId: ""; children: [] })
 
   return elTreeData;
 }
+
+
 
 defineExpose({ data, items, currentSelectNode });
 

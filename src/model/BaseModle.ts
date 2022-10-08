@@ -56,5 +56,5 @@ export class BaseListResp extends BaseModle {
 }
 
 const PAGE = 1;
-const SIZE = 1;
+const SIZE = 10;
 const ZERO = 0;

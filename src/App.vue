@@ -1,12 +1,12 @@
 <template>
   <el-container>
-    <el-aside style="background-color: black;width: 16%">
+    <el-aside style="background-color: black;width: 15%">
       <el-row>
         <el-col>
           <ProjectInfoView ></ProjectInfoView>
         </el-col>
         <el-divider border-style="double" style="background-color: #D3ECA7"/>
-        <el-col>
+        <el-col class="menu-col">
           <MenuView></MenuView>
         </el-col>
       </el-row>
@@ -72,6 +72,9 @@ html, body, #app, .el-container {
   border-width: 3px;
   background-color: white;
   /*height: 30px;*/
+}
+
+.menu-col{
 }
 
 

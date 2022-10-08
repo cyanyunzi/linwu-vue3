@@ -36,8 +36,6 @@ const ruleFormRef = ref<FormInstance>();
 
 const menuTreeSelect = ref();
 
-const isUpdate = ref(false);
-
 const id = ref("");
 
 
@@ -69,12 +67,7 @@ const addMenu = async () => {
     }
   });
 
-  if (!isUpdate.value) {
-    await MenuService.addMenu(addReq);
-  } else {
-    await MenuService.updateMenu(id.value, addReq);
-  }
-
+  await MenuService.addMenu(addReq);
 };
 
 
